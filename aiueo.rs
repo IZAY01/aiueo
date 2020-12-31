@@ -16,17 +16,34 @@ fn main() {
 
 
 fn puts_full_table() {
-    for item in &TABLE {
-        println!("{:?}", item);
-    }    
+    println!("\x1b[34mUsage: ./aiueo <query1> <query2> ...");
+    for i in 0..46 {
+        match i {
+            0..=4 | 45 => print!("{}{}  {}{} {}\t", KEY_FONT, TABLE[i][0], VALUE_FONT, TABLE[i][1], TABLE[i][2]),
+            _ => print!("{}{} {}{} {}\t", KEY_FONT, TABLE[i][0], VALUE_FONT, TABLE[i][1], TABLE[i][2]),
+        }
+        match i {
+            4 | 9 | 14 | 19 | 24 | 29 | 34 | 37 | 42 | 44 | 45 => println!(),
+            _ => (),
+        }
+        match i {
+            35 | 36 => print!("\t\t"),
+            43 => print!("\t\t\t\t\t\t"),
+            44 => print!("\t\t\t\t"),
+            _ => (),
+        }
+   }    
 }
 
 
 fn puts_query_item(s: &String) {
     for i in 0..46 {
         if TABLE[i].contains(&s.as_str()) {
-            if i < 5 {
+            if (i < 5 || i == 45) && s.as_str().chars().nth(0).unwrap().is_ascii() {
                 print!("{}{}  : ", KEY_FONT, s);
+                println!("{}{}  {} {}", VALUE_FONT, TABLE[i][0], TABLE[i][1], TABLE[i][2]);
+            } else if i < 5 || i == 45 {
+                print!("{}{} : ", KEY_FONT, s);
                 println!("{}{}  {} {}", VALUE_FONT, TABLE[i][0], TABLE[i][1], TABLE[i][2]);
             } else {
                 print!("{}{} : ",  KEY_FONT, s);
@@ -38,9 +55,8 @@ fn puts_query_item(s: &String) {
 }
 
 
-const KEY_FONT: &str = "\x1b[31m";
-const VALUE_FONT: &str = "\x1b[32m";
-const RESET_LABEL: &str = "\x1b[0m";
+const KEY_FONT: &str = "\x1b[32m";
+const VALUE_FONT: &str = "\x1b[36m";
 const TABLE: [ [&str; 3]; 46] = 
 [
     ["a" , "あ", "ア"], ["i" , "い", "イ"], ["u" , "う", "ウ"], ["e" , "え", "エ"], ["o" , "お", "オ"],
